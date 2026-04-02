@@ -18,8 +18,7 @@
     "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.3.0",
-    "morgan": "^1.10.0",
-    "zorvyn-finance-app": "file:.."
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
     "mongodb-memory-server": "^11.0.1",
