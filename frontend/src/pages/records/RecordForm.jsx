@@ -249,9 +249,9 @@ const RecordForm = () => {
                             </button>
                             <Link 
                                 to="/records" 
-                                className="h-14 px-8 flex items-center justify-center gap-2 text-slate-500 font-bold hover:bg-slate-100 rounded-2xl transition-colors"
+                                className="h-12 sm:h-14 px-5 sm:px-8 flex items-center justify-center gap-2 text-slate-500 font-bold hover:bg-slate-100 rounded-2xl transition-colors"
                             >
-                                <X className="w-5 h-5" />
+                                <X className="w-4 h-4 sm:w-5 sm:h-5" />
                                 Cancel
                             </Link>
                         </div>
