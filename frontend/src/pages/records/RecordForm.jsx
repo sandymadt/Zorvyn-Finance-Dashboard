@@ -109,16 +109,16 @@ const RecordForm = () => {
                         </div>
                         Back to Ledger
                     </Link>
-                    <h2 className="text-3xl font-black text-slate-900 tracking-tight mt-4">
+                    <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mt-4">
                         {isEdit ? 'Modify Entry' : 'New Transaction'}
                     </h2>
                     <p className="text-slate-500 mt-1 font-medium text-sm">Fill in the metrics for your financial record</p>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
                 {/* Form Section */}
-                <div className="lg:col-span-2 card p-10 !rounded-[32px] shadow-2xl shadow-slate-200/50">
+                <div className="lg:col-span-2 card p-6 sm:p-10 !rounded-[24px] sm:!rounded-[32px] shadow-2xl shadow-slate-200/50">
                     <form onSubmit={handleSubmit} className="space-y-8">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div className="space-y-6">
@@ -232,11 +232,11 @@ const RecordForm = () => {
                             <p className="mt-2 text-right text-[10px] font-bold text-slate-400 uppercase tracking-widest">{formData.note.length}/200</p>
                         </div>
 
-                        <div className="flex items-center gap-4 pt-4">
+                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-4">
                             <button 
                                 type="submit" 
                                 disabled={isLoading}
-                                className="btn-primary h-14 px-10 flex items-center justify-center gap-3 text-lg shadow-2xl shadow-primary-600/30"
+                                className="btn-primary h-12 sm:h-14 px-6 sm:px-10 flex items-center justify-center gap-3 text-base sm:text-lg shadow-2xl shadow-primary-600/30"
                             >
                                 {isLoading ? (
                                     <Loader2 className="w-6 h-6 animate-spin" />

@@ -56,15 +56,15 @@ const LoginPage = () => {
             </div>
 
             {/* Right Section - Login Form */}
-            <div className="flex flex-col justify-center items-center p-8 bg-white lg:bg-slate-50/20">
-                <div className="w-full max-w-md bg-white p-10 rounded-[32px] shadow-2xl shadow-slate-200/50 border border-slate-100 flex flex-col items-center">
+            <div className="flex flex-col justify-center items-center p-4 sm:p-8 bg-white lg:bg-slate-50/20 min-h-screen lg:min-h-0">
+                <div className="w-full max-w-md bg-white p-6 sm:p-10 rounded-[24px] sm:rounded-[32px] shadow-2xl shadow-slate-200/50 border border-slate-100 flex flex-col items-center">
                     {/* Header */}
-                    <div className="text-center mb-10">
-                        <div className="lg:hidden p-3 bg-primary-50 rounded-2xl w-fit mx-auto mb-6">
-                            <Wallet className="w-8 h-8 text-primary-600" />
+                    <div className="text-center mb-8">
+                        <div className="lg:hidden p-3 bg-primary-50 rounded-2xl w-fit mx-auto mb-5">
+                            <Wallet className="w-7 h-7 text-primary-600" />
                         </div>
-                        <h1 className="text-3xl font-black text-slate-900 tracking-tight">Welcome Back</h1>
-                        <p className="text-slate-500 mt-2 font-medium">Log in to manage your financial dashboard</p>
+                        <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">Welcome Back</h1>
+                        <p className="text-slate-500 mt-2 font-medium text-sm sm:text-base">Log in to manage your financial dashboard</p>
                     </div>
 
                     {/* Form */}

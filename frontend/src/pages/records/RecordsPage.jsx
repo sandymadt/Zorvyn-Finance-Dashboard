@@ -80,27 +80,27 @@ const RecordsPage = () => {
     };
 
     return (
-        <div className="space-y-8 pb-10">
+        <div className="space-y-6 pb-8 sm:pb-10">
             {/* Header Content */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h2 className="text-3xl font-black text-slate-900 tracking-tight flex items-center gap-3">
-                        <ReceiptText className="w-8 h-8 text-primary-600" />
-                        Finances & History
+                    <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2 sm:gap-3">
+                        <ReceiptText className="w-6 h-6 sm:w-8 sm:h-8 text-primary-600 flex-shrink-0" />
+                        Finances &amp; History
                     </h2>
                     <p className="text-slate-500 mt-1.5 font-medium text-sm">Detailed transaction log and financial history</p>
                 </div>
                 {isAdmin && (
-                    <Link to="/records/new" className="btn-primary flex items-center justify-center gap-2 h-12 px-6 shadow-xl shadow-primary-600/20">
-                        <Plus className="w-5 h-5" />
+                    <Link to="/records/new" className="btn-primary flex items-center justify-center gap-2 h-11 sm:h-12 px-5 sm:px-6 shadow-xl shadow-primary-600/20 self-start sm:self-auto">
+                        <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
                         <span>New Entry</span>
                     </Link>
                 )}
             </div>
 
             {/* Filters and Search Bar */}
-            <div className="card grid grid-cols-1 md:grid-cols-4 gap-4 p-5">
-                <form onSubmit={handleSearchSubmit} className="relative group">
+            <div className="card grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 p-4 sm:p-5">
+                <form onSubmit={handleSearchSubmit} className="relative group col-span-2 md:col-span-1">
                     <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400 group-focus-within:text-primary-500 transition-colors">
                         <Search className="w-4 h-4" />
                     </span>
@@ -152,20 +152,72 @@ const RecordsPage = () => {
 
                 <button 
                     onClick={fetchRecords}
-                    className="bg-slate-900 hover:bg-slate-800 text-white font-bold h-11 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 group"
+                    className="bg-slate-900 hover:bg-slate-800 text-white font-bold h-10 sm:h-11 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 group col-span-2 md:col-span-1"
                 >
                     Apply Filter
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
             </div>
 
-            {/* Table Area */}
+            {/* Table / Card Area */}
             <div className="card overflow-hidden !p-0">
-                <div className="overflow-x-auto min-h-[400px]">
+
+                {/* Mobile card list */}
+                <div className="sm:hidden divide-y divide-slate-100 min-h-[300px]">
+                    {loading ? (
+                        <div className="flex flex-col items-center justify-center py-24">
+                            <Loader2 className="w-8 h-8 text-primary-500 animate-spin" />
+                            <p className="mt-3 text-xs font-bold text-slate-400 uppercase tracking-widest animate-pulse">Syncing...</p>
+                        </div>
+                    ) : records.length > 0 ? records.map((record) => (
+                        <div key={record._id} className="flex items-center justify-between p-4 hover:bg-slate-50/50 transition-colors">
+                            <div className="flex items-center gap-3 min-w-0">
+                                <div className="p-2 bg-slate-50 border border-slate-100 rounded-xl flex-shrink-0">
+                                    <Calendar className="w-4 h-4 text-slate-400" />
+                                </div>
+                                <div className="min-w-0">
+                                    <p className="text-xs font-black text-slate-900 uppercase tracking-wide truncate">{record.category}</p>
+                                    <p className="text-[10px] text-slate-400 font-medium">{new Date(record.date).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+                                    <p className="text-[10px] text-slate-400 italic truncate">{record.note?.substring(0, 25) || 'No note'}</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                                <div className="text-right">
+                                    <p className={clsx("text-sm font-black", record.type === 'income' ? 'text-emerald-600' : 'text-rose-600')}>
+                                        {record.type === 'income' ? '+' : '-'}₹{record.amount.toLocaleString('en-IN')}
+                                    </p>
+                                    <span className={clsx(
+                                        "text-[9px] font-black uppercase tracking-widest",
+                                        record.type === 'income' ? "text-emerald-500" : "text-rose-500"
+                                    )}>{record.type}</span>
+                                </div>
+                                {isAdmin && (
+                                    <div className="flex gap-1">
+                                        <Link to={`/records/edit/${record._id}`} className="p-2 text-slate-400 hover:text-primary-600 bg-slate-50 hover:bg-primary-50 border border-slate-100 transition-all rounded-lg">
+                                            <Edit2 className="w-3 h-3" />
+                                        </Link>
+                                        <button onClick={() => handleDelete(record._id)} className="p-2 text-slate-400 hover:text-rose-600 bg-slate-50 hover:bg-rose-50 border border-slate-100 transition-all rounded-lg">
+                                            <Trash2 className="w-3 h-3" />
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )) : (
+                        <div className="flex flex-col items-center justify-center py-20 text-center">
+                            <ReceiptText className="w-10 h-10 text-slate-200 mb-3" />
+                            <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">No records found</p>
+                            <p className="text-slate-400 mt-1 text-sm italic">Try adjusting your filters.</p>
+                        </div>
+                    )}
+                </div>
+
+                {/* Desktop table */}
+                <div className="hidden sm:block overflow-x-auto min-h-[400px]">
                     <table className="w-full text-left border-collapse">
                         <thead>
                             <tr className="bg-slate-50 border-b border-slate-100">
-                                <th className="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Date & Info</th>
+                                <th className="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Date &amp; Info</th>
                                 <th className="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Category</th>
                                 <th className="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Reference</th>
                                 <th className="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400 text-right">Amount</th>
@@ -234,7 +286,7 @@ const RecordsPage = () => {
                                 <tr>
                                     <td colSpan="5" className="px-6 py-32 text-center">
                                         <div className="max-w-xs mx-auto">
-                                            <Loader2 className="w-12 h-12 text-slate-200 mx-auto mb-4" />
+                                            <ReceiptText className="w-12 h-12 text-slate-200 mx-auto mb-4" />
                                             <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">No transaction history discovered</p>
                                             <p className="text-slate-400 mt-2 text-sm italic">Try adjusting your filters or add a new entry.</p>
                                         </div>
@@ -246,7 +298,7 @@ const RecordsPage = () => {
                 </div>
 
                 {/* Pagination Controls */}
-                <div className="flex items-center justify-between px-6 py-5 bg-slate-50/50 border-t border-slate-100">
+                <div className="flex items-center justify-between px-4 sm:px-6 py-4 sm:py-5 bg-slate-50/50 border-t border-slate-100">
                     <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
                         Page <span className="text-slate-900 font-black">{page}</span> of <span className="text-slate-900 font-black">{totalPages || 1}</span>
                     </p>
@@ -272,4 +324,4 @@ const RecordsPage = () => {
     );
 };
 
-export default RecordsPage;
+export default RecordsPage;e;

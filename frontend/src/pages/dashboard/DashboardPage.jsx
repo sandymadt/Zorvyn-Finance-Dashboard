@@ -41,7 +41,7 @@ const SummaryCard = ({ title, amount, type, icon: Icon, percentage }) => {
             <div className="flex items-start justify-between relative z-10">
                 <div>
                     <p className="text-sm font-bold text-slate-400 uppercase tracking-widest">{title}</p>
-                    <h3 className="text-3xl font-black text-slate-900 mt-2 tracking-tight">
+                    <h3 className="text-2xl sm:text-3xl font-black text-slate-900 mt-2 tracking-tight">
                         ₹{amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                     </h3>
                     <div className="mt-4 flex items-center gap-2">
@@ -120,7 +120,7 @@ const DashboardPage = () => {
     })) || [];
 
     return (
-        <div className="space-y-8 pb-10">
+        <div className="space-y-6 sm:space-y-8 pb-8 sm:pb-10">
             {/* Summary Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
                 <SummaryCard 
@@ -147,7 +147,7 @@ const DashboardPage = () => {
             </div>
 
             {/* Charts Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 sm:gap-8">
                 {/* Bar Chart - Comparison */}
                 <div className="lg:col-span-3 card h-[450px] flex flex-col">
                     <div className="flex items-center justify-between mb-8">
@@ -258,19 +258,45 @@ const DashboardPage = () => {
                 </div>
             </div>
 
-            {/* Recent Transactions Table */}
+            {/* Recent Transactions */}
             <div className="card overflow-hidden">
-                <div className="flex items-center justify-between mb-8">
-                     <div>
-                        <h3 className="text-xl font-black text-slate-900 tracking-tight">Recent Activity</h3>
+                <div className="flex items-center justify-between mb-6">
+                    <div>
+                        <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">Recent Activity</h3>
                         <p className="text-xs font-bold text-slate-400 mt-1 uppercase tracking-widest">Your last 5 transactions</p>
                     </div>
-                    <Link to="/records" className="text-sm font-bold text-primary-600 hover:text-primary-700 bg-primary-50 px-4 py-2 rounded-xl transition-colors">
-                        View All Records
+                    <Link to="/records" className="text-xs sm:text-sm font-bold text-primary-600 hover:text-primary-700 bg-primary-50 px-3 sm:px-4 py-2 rounded-xl transition-colors whitespace-nowrap">
+                        View All
                     </Link>
                 </div>
-                
-                <div className="overflow-x-auto -mx-6">
+
+                {/* Mobile card list */}
+                <div className="sm:hidden space-y-3">
+                    {summary?.recentRecords?.map((record) => (
+                        <div key={record._id} className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100">
+                            <div className="flex items-center gap-3">
+                                <div className={clsx("w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0",
+                                    record.type === 'income' ? 'bg-emerald-50' : 'bg-rose-50'
+                                )}>
+                                    <span className={clsx("w-2 h-2 rounded-full", record.type === 'income' ? 'bg-emerald-500' : 'bg-rose-500')} />
+                                </div>
+                                <div>
+                                    <p className="text-xs font-black text-slate-700 uppercase tracking-wide">{record.category}</p>
+                                    <p className="text-[10px] text-slate-400 font-medium">{new Date(record.date).toLocaleDateString()}</p>
+                                </div>
+                            </div>
+                            <p className={clsx("text-sm font-black", record.type === 'income' ? 'text-emerald-600' : 'text-rose-600')}>
+                                {record.type === 'income' ? '+' : '-'}₹{record.amount.toLocaleString('en-IN')}
+                            </p>
+                        </div>
+                    ))}
+                    {(!summary?.recentRecords || summary.recentRecords.length === 0) && (
+                        <p className="text-center text-slate-400 italic text-sm py-6">No recent transactions found.</p>
+                    )}
+                </div>
+
+                {/* Desktop table */}
+                <div className="hidden sm:block overflow-x-auto -mx-6">
                     <table className="w-full text-left">
                         <thead>
                             <tr className="bg-slate-50/50 border-y border-slate-100">
