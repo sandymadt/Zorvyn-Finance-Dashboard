@@ -1,7 +1,14 @@
 import axios from 'axios';
 
+// Safely construct the API base URL:
+// - If VITE_API_URL already ends with /api, use it as-is
+// - If VITE_API_URL is set but missing /api, append /api
+// - Otherwise fall back to local dev server
+const rawUrl = (import.meta.env.VITE_API_URL || 'http://localhost:5000').replace(/\/$/, '');
+const BASE_URL = rawUrl.endsWith('/api') ? rawUrl : `${rawUrl}/api`;
+
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+    baseURL: BASE_URL,
     headers: {
         'Content-Type': 'application/json',
     },
